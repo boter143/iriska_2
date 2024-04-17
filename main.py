@@ -13,15 +13,17 @@ from tgbot.database.db_users import Userx
 
 
 async def on_startup(bot: Bot):
-    await bot.send_message(ADMIN_ID, f'✔️ ➖ BerryBot ➖ ✔️\n'
+    try:
+        await bot.send_message(ADMIN_ID, f'✔️ ➖ BerryBot ➖ ✔️\n'
                                      f'➖➖➖➖➖➖➖➖'
                                      f'\n\n'
                                      f'<b>Версия 🐍: {PY_VERSION}\n'
                                      f'Кол-во 👥: {Userx.get_all_count()}</b>'
                                      f'\n\n'
                                      f'➖➖➖➖➖➖➖➖\n'
-                                     f'<code>❗ Данное сообщение видят только администраторы бота.</code>')
-
+                                     f'<code>❗ Данное сообщение видит только администратор.</code>')
+    except:
+        print('АДМИН НЕ ВОШЁЛ В БОТА')
 
 async def main():
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode='HTML'))  # Образ Бота
@@ -31,10 +33,7 @@ async def main():
     register_all_middlewares(dp)  # Подключение всех middlewares
 
     try:
-        try:
-            await on_startup(bot)  # Рассылка админам при запуске
-        except:
-            print('АДМИН НЕ ВОШЁЛ В БОТА')
+        await on_startup(bot)  # Рассылка админам при запуске
         await set_commands(bot)  # Установка команд для users/admin
 
         await bot.delete_webhook()

@@ -6,12 +6,14 @@ from tgbot.data.config import ADMIN_ID
 # Users команды
 user_commands = [
     BotCommand(command='start', description='♻️ Перезапустить бота'),
+    BotCommand(command='ref', description='👥 Реферальная система'),
     BotCommand(command='help', description='🆘 Помощь'),
 ]
 
 # Admin команды
 admin_commands = [
     BotCommand(command='start', description='♻️ Перезапустить бота'),
+    BotCommand(command='ref', description='👥 Реферальная система'),
     BotCommand(command='help', description='🆘 Помощь'),
     BotCommand(command='admin', description='👑 Админ-панель'),
     BotCommand(command='db', description='📦 Получить Базу Данных'),

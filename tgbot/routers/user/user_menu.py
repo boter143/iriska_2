@@ -40,10 +40,33 @@ async def start(message: Message, bot: Bot, state: FSMContext):
                     Userx.user_add_ref(message.from_user.id, referral_id)
                     Userx.user_uptime(referral_id, MINUTES_PER_REFERRAL)
                     try:
-                        await bot.send_message(referral_id, 'У Вас новый реферал!\n'
-                                                            f'+ {MINUTES_PER_REFERRAL} минут к доступу')
+                        await bot.send_message(referral_id, '🎊 У Вас новый реферал!\n'
+                                                            f'+ {MINUTES_PER_REFERRAL} минут PREMIUM')
                     except:
                         pass
+                    count_referrals = Userx.user_count_ref(user_id=referral_id)
+
+                    # Проверка на количество рефералов
+                    if count_referrals == 5:
+                        Userx.user_uptime(user_id=referral_id, minutes=60)
+                        try:
+                            await bot.send_message(chat_id=referral_id, text='🎉 За 5 рефералов Вам начислено 1 час PREMIUM')
+                        except:
+                            pass
+                    elif count_referrals == 10:
+                        Userx.user_uptime(user_id=referral_id, minutes=1440)
+                        try:
+                            await bot.send_message(chat_id=referral_id,
+                                                   text='🎉 За 10 рефералов Вам начислено 1 день PREMIUM')
+                        except:
+                            pass
+                    elif count_referrals == 20:
+                        Userx.user_uptime(user_id=referral_id, minutes=2880)
+                        try:
+                            await bot.send_message(chat_id=referral_id,
+                                                   text='🎉 За 20 рефералов Вам начислено 2 дня PREMIUM')
+                        except:
+                            pass
             else:
                 await message.answer('Нельзя использовать свою реферальную ссылку!')
         except:
@@ -90,7 +113,7 @@ async def profile(message: Message, bot: Bot, state: FSMContext):
                          f'💵: {user.user_balance} berrycoins\n\n'
                          f'🔗 Реферальная ссылка:\n'
                          f'<code>t.me/{bot_tag.username}?start={numbersystem.decimalToOctal(message.from_user.id)}</code>\n\n'
-                         f'👥 Кол-во рефералов: {0}\n\n'
+                         f'👥 Кол-во рефералов: {Userx.user_count_ref(message.from_user.id)} - /ref\n\n'
                          f'{response}', reply_markup=balance_add_finl())
 
 

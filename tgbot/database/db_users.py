@@ -129,6 +129,14 @@ class Userx():
             con.execute(f'UPDATE {Userx.storage_name} SET user_referral = ? WHERE user_id = ?',
                         (referral_id, user_id,))
 
+    # Сколько рефералов у пользователя
+    @staticmethod
+    def user_count_ref(user_id):
+        with sq.connect(PATH_DATABASE) as con:
+            count = con.execute(f'SELECT user_referral FROM {Userx.storage_name} '
+                                f'WHERE user_referral = ?', (user_id,)).fetchall()
+        return len(count)
+
     # Изменение времени пользователю
     @staticmethod
     def user_uptime(user_id, minutes):
